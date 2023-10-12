@@ -1,0 +1,3 @@
+[submodule "Assets/UHCore"]
+	path = Assets/UHCore
+	url = https://github.com/devnem0y/UHCore.git

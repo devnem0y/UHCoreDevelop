@@ -9,7 +9,7 @@ namespace UralHedgehog
             Run();
             
             var dataExample = new Data(nameof(WTest), 1);
-            UIDispatcher.Send(UI.Event.SHOW_WIDGET, dataExample);
+            UIDispatcher.Send(EventUI.SHOW_WIDGET, dataExample);
         }
     }
 }

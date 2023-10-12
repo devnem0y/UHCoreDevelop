@@ -21,14 +21,14 @@ namespace UralHedgehog
 
         #region ActionsEvent
 
-        private static Action GetEvent(Event e)
+        private static Action GetEvent(EventD e)
         {
             return e switch
             {
-                Event.SYSTEM_LOADING => SystemLoading,
-                Event.SYSTEM_LAUNCH => SystemLaunch,
-                Event.SYSTEM_BEGIN => SystemBegin,
-                Event.SYSTEM_LOCALIZE => SystemLocalize,
+                EventD.SYSTEM_LOADING => SystemLoading,
+                EventD.SYSTEM_LAUNCH => SystemLaunch,
+                EventD.SYSTEM_BEGIN => SystemBegin,
+                EventD.SYSTEM_LOCALIZE => SystemLocalize,
                 
                 _ => throw new ArgumentOutOfRangeException(nameof(e), e, null)
             };
@@ -38,7 +38,7 @@ namespace UralHedgehog
 
         #region ActionsEventHasParam
 
-        private static Action<object> GetEventHasParam(Event e)
+        private static Action<object> GetEventHasParam(EventD e)
         {
             throw e switch
             {
@@ -54,7 +54,7 @@ namespace UralHedgehog
         /// Отправка события без параметров
         /// </summary>
         /// <param name="e">Событие</param>
-        public static void Send(Event e)
+        public static void Send(EventD e)
         {
             Invoker(GetEvent(e));
         }
@@ -64,7 +64,7 @@ namespace UralHedgehog
         /// </summary>
         /// <param name="e">Событие</param>
         /// <param name="arg">Параметр</param>
-        public static void Send(Event e, object arg)
+        public static void Send(EventD e, object arg)
         {
             Invoker(GetEventHasParam(e), arg);
         }
@@ -74,7 +74,7 @@ namespace UralHedgehog
         /// </summary>
         /// <param name="e">Событие</param>
         /// <param name="args">Массив параметров</param>
-        public static void Send(Event e, params object[] args)
+        public static void Send(EventD e, params object[] args)
         {
             Invoker(GetEventHasParam(e), args);
         }
@@ -97,7 +97,7 @@ namespace UralHedgehog
         #endregion
     }
 
-    public enum Event
+    public enum EventD
     {
         // SYSTEM Не игровые события, а глобальные для проекта
         SYSTEM_LOADING,
