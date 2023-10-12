@@ -9,6 +9,10 @@ namespace UralHedgehog
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private SettingsConfig _settingsConfig;
         
+        //TODO: Mock это конфиги для редактора
+        [SerializeField] private SettingsConfig _settingsMock;
+        [SerializeField] private PlayerConfig _playerMock;
+        
         public static UserInfo UserInfo { get; private set; }
         public bool IsLoaded { get; private set; }
         
@@ -30,11 +34,9 @@ namespace UralHedgehog
                 UserInfo = new UserInfo(_settingsConfig.Data, _playerConfig.Data);
             }
             
-            //TODO: Этот момент тоже доработать, нужно сделать заглушки, которые можно менять
-/*#if UNITY_EDITOR // Если работаем в редакторе, достаем из конфига, перезаписывая то что было взято из PlayerPrefs
-            _dataSettings = _configSettings.Data;
-            _dataPlayer = _configPlayer.Data;
-#endif*/
+#if UNITY_EDITOR // Если работаем в редакторе, достаем из моков
+            UserInfo = new UserInfo(_settingsMock.Data, _playerMock.Data);
+#endif
             
             IsLoaded = true;
             Debug.Log("Data loading: <color=green>DONE</color>");

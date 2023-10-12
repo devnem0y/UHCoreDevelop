@@ -2,7 +2,7 @@
 {
     public class PlayerBase : ISaver
     {
-        public PlayerData Data { get; protected set; }
+        public IData Data { get; protected set; }
         
         public virtual void Save()
         {

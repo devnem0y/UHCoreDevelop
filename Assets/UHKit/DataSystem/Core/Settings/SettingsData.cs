@@ -19,6 +19,15 @@ namespace UralHedgehog
         
         public Language Language;
 
+        public SettingsData(SettingsData data)
+        {
+            Master = data.Master;
+            Music = data.Music;
+            Sound = data.Sound;
+            Voice = data.Voice;
+            Language = data.Language;
+        }
+        
         public SettingsData(float master, float music, float sound, float voice, Language language)
         {
             Master = master;

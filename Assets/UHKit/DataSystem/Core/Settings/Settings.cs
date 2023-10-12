@@ -13,7 +13,7 @@ namespace UralHedgehog
         
         private readonly AudioMixer _audioMixer;
         
-        public SettingsData Data { get; private set; }
+        public IData Data { get; private set; }
         
         public float VolumeMaster { get; private set; }
         public float VolumeMusic { get; private set; }
@@ -28,11 +28,11 @@ namespace UralHedgehog
             Data = data;
             _audioMixer = audioMixer;
             
-            ChangeVolumeMaster(Data.Master);
-            ChangeVolumeMusic(Data.Music);
-            ChangeVolumeSound(Data.Sound);
-            ChangeVolumeVoice(Data.Voice);
-            ChangeLanguage(Data.Language);
+            ChangeVolumeMaster(data.Master);
+            ChangeVolumeMusic(data.Music);
+            ChangeVolumeSound(data.Sound);
+            ChangeVolumeVoice(data.Voice);
+            ChangeLanguage(data.Language);
         }
 
         private void SetFloat(string nameGroup, float value)

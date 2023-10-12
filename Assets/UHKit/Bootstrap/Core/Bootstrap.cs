@@ -9,6 +9,7 @@ namespace UralHedgehog
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] private Loader _loader;
+        [SerializeField] private Saver _saver;
         
         [SerializeField] private LocalizationConfig _localizationConfig;
         [SerializeField] private AudioMixer _audioMixer;
@@ -63,9 +64,7 @@ namespace UralHedgehog
 
         public void Save()
         {
-            _settings.Save();
-            _player.Save();
-            Saver.Write(new UserInfo(_settings.Data, _player.Data));
+            _saver.Write(_settings, _player);
         }
 
         public virtual void ChangeState(GameState state)

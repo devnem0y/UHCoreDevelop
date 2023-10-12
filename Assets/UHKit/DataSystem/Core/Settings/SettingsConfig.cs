@@ -1,9 +1,16 @@
 using UnityEngine;
 using UralHedgehog;
 
-[CreateAssetMenu(fileName = "SettingsConfig", menuName = "Data System/Settings", order = 1)]
-public class SettingsConfig : ScriptableObject
+namespace UralHedgehog
 {
-    [SerializeField] private SettingsData _data;
-    public SettingsData Data => _data;
+    [CreateAssetMenu(fileName = "SettingsConfig", menuName = "Data System/Settings", order = 2)]
+    public class SettingsConfig : ScriptableObject
+    {
+        [SerializeField] private SettingsData _data;
+        public SettingsData Data
+        {
+            get => _data;
+            set => _data = value;
+        }
+    }
 }

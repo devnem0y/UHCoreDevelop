@@ -1,14 +1,21 @@
-using UralHedgehog;
-
-[System.Serializable]
-public struct PlayerData : IData
+namespace UralHedgehog
 {
-    public string Name;
-    public int Soft;
-
-    public PlayerData(string name, int soft)
+    [System.Serializable]
+    public struct PlayerData : IData
     {
-        Name = name;
-        Soft = soft;
+        public string Name;
+        public int Soft;
+
+        public PlayerData(PlayerData data)
+        {
+            Name = data.Name;
+            Soft = data.Soft;
+        }
+    
+        public PlayerData(string name, int soft)
+        {
+            Name = name;
+            Soft = soft;
+        }
     }
 }
