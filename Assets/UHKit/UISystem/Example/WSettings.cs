@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UralHedgehog;
 using UralHedgehog.UI;
 
-public class WTest : Widget
+public class WSettings : Widget
 {
     [SerializeField] private Button _btnClose;
+
+    private ISettings _settings;
 
     protected override void Awake()
     {
@@ -14,7 +17,7 @@ public class WTest : Widget
 
     public override void Init(params object[] param)
     {
-        Debug.Log(param[0].ToString());
+        _settings = (ISettings) param[0];
     }
 
     public override void Show()

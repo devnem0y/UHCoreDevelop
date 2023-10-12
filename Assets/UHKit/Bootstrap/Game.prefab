@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf7a9e438534de78561874a5c296cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _loader: {fileID: 11400000, guid: 17429964f9a8ea144a11f56dea97974f, type: 2}
   _localizationConfig: {fileID: 11400000, guid: 559fc892bc1cc704e94e95af25cd11e8, type: 2}
   _audioMixer: {fileID: 24100000, guid: da9ec1a4d53de364aa35ce645567570f, type: 2}
   _audioResources: {fileID: 11400000, guid: e6f72874f0ca96f42ab9be2a8f01f222, type: 2}

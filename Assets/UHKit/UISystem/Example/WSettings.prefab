@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 8015555602500150929}
   - component: {fileID: 3546546572517400199}
   m_Layer: 0
-  m_Name: WTest
+  m_Name: WSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

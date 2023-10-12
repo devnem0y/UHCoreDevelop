@@ -15,7 +15,6 @@ namespace UralHedgehog
         private void Awake()
         {
             _bootstrap = FindObjectOfType<Bootstrap>();
-            Debug.Log(_bootstrap.gameObject.name);
             _label = GetComponent<TMP_Text>();
         }
 
