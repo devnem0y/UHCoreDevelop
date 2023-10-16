@@ -53,11 +53,11 @@ namespace UralHedgehog
         /// </summary>
         protected virtual void Initialization()
         {
-            _settings = new Settings(Loader.UserInfo.SettingsData, _audioMixer);
+            _settings = new Settings(_loader.UserInfo.SettingsData, _audioMixer);
             LocalizationManager = new LocalizationManager(_localizationConfig) { Language = _settings.Language };
             _settings.OnChangeLanguage += OnLocalize;
             AudioManager = new AudioManager(_audioMixer, _audioResources);
-            _player = new Player(Loader.UserInfo.PlayerData);
+            _player = new Player(_loader.UserInfo.PlayerData);
             
             _init = true;
         }

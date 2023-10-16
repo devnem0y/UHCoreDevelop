@@ -30,6 +30,6 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: _data.Soft
-    value: 100
+    value: 333
     objectReference: {fileID: 0}
   m_ExcludedProperties: []

@@ -13,7 +13,7 @@ namespace UralHedgehog
         [SerializeField] private SettingsConfig _settingsMock;
         [SerializeField] private PlayerConfig _playerMock;
         
-        public static UserInfo UserInfo { get; private set; }
+        public UserInfo UserInfo { get; private set; }
         public bool IsLoaded { get; private set; }
         
         public void Load()
