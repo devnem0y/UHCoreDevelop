@@ -1,31 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace UralHedgehog
 {
     public class AudioComponent : MonoBehaviour
     {
-        [SerializeField] private bool _isUIElement;
-        public bool IsUIElement => _isUIElement;
+        [SerializeField] private bool isUIElement;
 
-        [SerializeField] private List<AudioLibMusic> _musics;
-        [SerializeField] private List<AudioLibSound> _sounds;
-        [SerializeField] private List<AudioLibVoice> _voices;
+        public bool IsUIElement
+        {
+            get => isUIElement;
+            set => isUIElement = value;
+        }
 
-        private Bootstrap _bootstrap;
+        [SerializeField] private List<AudioLibMusic> musics;
+        [SerializeField] private List<AudioLibSound> sounds;
+        [SerializeField] private List<AudioLibVoice> voices;
+
         private Dictionary<string, AudioSource> _audioSourcesSounds;
         private AudioSource _sourceMusicCurrent;
         private AudioSource _sourceMusicPrevious;
         private AudioSource _sourceMusicNext;
 
-        private void Awake()
-        {
-            _bootstrap = FindObjectOfType<Bootstrap>();
-        }
+        private List<AudioLibMusic> _playList;
 
-        private void Start()
+        /// <summary>
+        /// Вызвать в Launch
+        /// </summary>
+        public void Init()
         {
             _audioSourcesSounds = new Dictionary<string, AudioSource>();
             AddSource();
@@ -34,24 +37,26 @@ namespace UralHedgehog
         private void AddSource()
         {
             // Добавление компонентов аудиосорсов для звуков, если не UI
-            if (_isUIElement) return;
-            if (!(_sounds?.Count > 0)) return;
-
-            foreach (var sound in _sounds)
+            if (!isUIElement)
             {
-                SearchSound(sound.Track, out var source);
-                if (source != null)
+                if (!(sounds?.Count > 0)) return;
+
+                foreach (var sound in sounds)
                 {
-                    _audioSourcesSounds.Add(sound.Track.ToString(), source);
+                    SearchSound(sound.Track, out var source);
+                    if (source != null)
+                    {
+                        _audioSourcesSounds.Add(sound.Track.ToString(), source);
+                    }
                 }
             }
         }
 
         public void Play(Sound sound)
         {
-            if (!(_sounds?.Count > 0)) return;
+            if (!(sounds?.Count > 0)) return;
 
-            if (_isUIElement)
+            if (isUIElement)
             {
                 PlaySoundUI(sound);
             }
@@ -61,13 +66,15 @@ namespace UralHedgehog
             }
         }
 
-        public void Play(Music music, float fadeDelay = 1.5f)
+        public void Play(Music music, float fadeDelay = 1.5f, bool isPlayList = false)
         {
             if (_sourceMusicCurrent == null)
             {
                 SearchMusic(music, out _sourceMusicPrevious);
                 _sourceMusicPrevious.Play();
-                StartCoroutine(PlayAndRemoveSourceComponentM(_sourceMusicPrevious));
+                StartCoroutine(isPlayList
+                    ? PlayRandomAndRemoveSourceComponentM(_sourceMusicPrevious)
+                    : PlayAndRemoveSourceComponentM(_sourceMusicPrevious));
                 _sourceMusicCurrent = _sourceMusicPrevious;
             }
             else
@@ -79,6 +86,9 @@ namespace UralHedgehog
                     StartCoroutine(Delay(_sourceMusicNext, fadeDelay));
                     StartCoroutine(Delay(_sourceMusicPrevious, fadeDelay, false));
                     StartCoroutine(PlayAndRemoveSourceComponentM(_sourceMusicNext));
+                    StartCoroutine(isPlayList
+                        ? PlayRandomAndRemoveSourceComponentM(_sourceMusicNext)
+                        : PlayAndRemoveSourceComponentM(_sourceMusicNext));
                     _sourceMusicCurrent = _sourceMusicNext;
                 }
                 else if (_sourceMusicNext.isPlaying)
@@ -87,7 +97,9 @@ namespace UralHedgehog
                     _sourceMusicPrevious.Play();
                     StartCoroutine(Delay(_sourceMusicPrevious, fadeDelay));
                     StartCoroutine(Delay(_sourceMusicNext, fadeDelay, false));
-                    StartCoroutine(PlayAndRemoveSourceComponentM(_sourceMusicPrevious));
+                    StartCoroutine(isPlayList
+                        ? PlayRandomAndRemoveSourceComponentM(_sourceMusicPrevious)
+                        : PlayAndRemoveSourceComponentM(_sourceMusicPrevious));
                     _sourceMusicCurrent = _sourceMusicPrevious;
                 }
             }
@@ -95,27 +107,33 @@ namespace UralHedgehog
 
         public void PlayMusicRandom()
         {
-            var randomMusic = Random.Range(0, _musics.Count - 1);
+            var randomMusic = Random.Range(0, musics.Count - 1);
 
-            Play(_musics[randomMusic].Track);
+            Play(musics[randomMusic].Track);
+        }
+
+        public void PlayMusicRandomAllPlayList()
+        {
+            _playList = new List<AudioLibMusic>(musics);
+            PlayRandomTrack();
         }
 
         public void Play(Voice voice)
         {
             AudioSource source = null;
 
-            if (!(_voices?.Count > 0)) return;
+            if (!(voices?.Count > 0)) return;
 
-            foreach (var v in _bootstrap.AudioManager.Voices)
+            foreach (var v in Game.Instance.AudioManager.Voices)
             {
                 if (v.Track != voice || voice == Voice.NONE) continue;
 
                 source = gameObject.AddComponent<AudioSource>();
-                source.outputAudioMixerGroup = _bootstrap.AudioManager.AmgVoice;
+                source.outputAudioMixerGroup = Game.Instance.AudioManager.AmgVoice;
                 source.playOnAwake = false;
                 source.volume = v.Volume;
                 source.clip = v.Clip;
-                foreach (var i in _voices)
+                foreach (var i in voices)
                 {
                     if (i.Track != voice || i.Track == Voice.NONE) continue;
                     source.loop = i.Loop;
@@ -152,7 +170,7 @@ namespace UralHedgehog
 
         public void StopSound(Sound sound)
         {
-            if (_isUIElement) return;
+            if (isUIElement) return;
 
             if (_audioSourcesSounds.TryGetValue(sound.ToString(), out var track))
             {
@@ -182,6 +200,31 @@ namespace UralHedgehog
                 _sourceMusicCurrent = null;
             }
         }
+        
+        private IEnumerator PlayRandomAndRemoveSourceComponentM(AudioSource source)
+        {
+            yield return new WaitForSeconds(source.clip.length);
+            if (source != null && !source.loop)
+            {
+                Destroy(source);
+                _sourceMusicCurrent = null;
+                PlayRandomTrack();
+            }
+        }
+
+        private void PlayRandomTrack()
+        {
+            if (_playList.Count > 0)
+            {
+                var randomMusic = Random.Range(0, _playList.Count - 1);
+                Play(_playList[randomMusic].Track, 15, true);
+                _playList.RemoveAt(randomMusic);
+            }
+            else
+            {
+                PlayMusicRandomAllPlayList();
+            }
+        }
 
         private void PlaySoundUI(Sound sound)
         {
@@ -209,16 +252,16 @@ namespace UralHedgehog
         {
             source = null;
 
-            foreach (var s in _bootstrap.AudioManager.Sounds)
+            foreach (var s in Game.Instance.AudioManager.Sounds)
             {
                 if (s.Track != sound || sound == Sound.NONE) continue;
 
                 source = gameObject.AddComponent<AudioSource>();
-                source.outputAudioMixerGroup = _bootstrap.AudioManager.AmgSound;
+                source.outputAudioMixerGroup = Game.Instance.AudioManager.AmgSound;
                 source.playOnAwake = false;
                 source.volume = s.Volume;
                 source.clip = s.Clip;
-                foreach (var i in _sounds)
+                foreach (var i in sounds)
                 {
                     if (i.Track != sound || i.Track == Sound.NONE) continue;
                     source.loop = i.Loop;
@@ -233,16 +276,16 @@ namespace UralHedgehog
         {
             source = null;
 
-            foreach (var m in _bootstrap.AudioManager.Musics)
+            foreach (var m in Game.Instance.AudioManager.Musics)
             {
                 if (m.Track != music || music == Music.NONE) continue;
 
                 source = gameObject.AddComponent<AudioSource>();
-                source.outputAudioMixerGroup = _bootstrap.AudioManager.AmgMusic;
+                source.outputAudioMixerGroup = Game.Instance.AudioManager.AmgMusic;
                 source.playOnAwake = false;
                 source.volume = m.Volume;
                 source.clip = m.Clip;
-                foreach (var i in _musics)
+                foreach (var i in musics)
                 {
                     if (i.Track != music || i.Track == Music.NONE) continue;
                     source.loop = i.Loop;

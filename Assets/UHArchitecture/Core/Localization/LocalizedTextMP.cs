@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +6,15 @@ namespace UralHedgehog
     public class LocalizedTextMP : MonoBehaviour
     {
         [SerializeField] private string _key;
+        
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
+        
+        public string Param { get; set; }
+        public string Prefix { get; set; }
 
         private Bootstrap _bootstrap;
         private TMP_Text _label;
@@ -32,6 +40,8 @@ namespace UralHedgehog
 
         private void Localize()
         {
+            if (_localizationManager == null) return;
+            
             switch (_localizationManager.Language)
             {
                 case Language.CHINESE_SIMPLIFIED:
@@ -47,11 +57,17 @@ namespace UralHedgehog
                 case Language.ITALIAN:
                     _label.font = _localizationManager.Config.ExtraTMP;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
 
-            _label.text = _localizationManager.GetTranslate(_key);
+            var str = _localizationManager.GetTranslate(_key);
+            if (string.IsNullOrEmpty(Prefix))
+            {
+                _label.text = string.IsNullOrEmpty(Param) ? str : $"{str}\n{Param}";
+            }
+            else
+            {
+                _label.text = string.IsNullOrEmpty(Param) ? $"{Prefix}{str}" : $"{Prefix}{str}\n{Param}";
+            }
         }
     }
 }

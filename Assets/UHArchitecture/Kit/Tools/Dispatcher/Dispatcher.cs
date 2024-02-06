@@ -17,6 +17,12 @@ namespace UralHedgehog
         public static event Action SystemBegin;
         public static event Action SystemLocalize;
 
+        // ON Игровые события
+        public static event Action<object> OnShowDialog;
+
+        // UI События для пользовательского интерфейса
+        public static event Action ChangeStateTabs;
+
         #endregion
 
         #region ActionsEvent
@@ -30,6 +36,8 @@ namespace UralHedgehog
                 EventD.SYSTEM_BEGIN => SystemBegin,
                 EventD.SYSTEM_LOCALIZE => SystemLocalize,
                 
+                EventD.UI_CHANGE_STATE_TABS => ChangeStateTabs,
+                
                 _ => throw new ArgumentOutOfRangeException(nameof(e), e, null)
             };
         }
@@ -40,9 +48,11 @@ namespace UralHedgehog
 
         private static Action<object> GetEventHasParam(EventD e)
         {
-            throw e switch
+            return e switch
             {
-                _ => new ArgumentOutOfRangeException(nameof(e), e, null)
+                EventD.ON_SHOW_DIALOG => OnShowDialog,
+
+                _ => throw new ArgumentOutOfRangeException(nameof(e), e, null)
             };
         }
 
@@ -104,5 +114,11 @@ namespace UralHedgehog
         SYSTEM_LAUNCH,
         SYSTEM_BEGIN,
         SYSTEM_LOCALIZE,
+
+        // ON Игровые события
+        ON_SHOW_DIALOG,
+
+        // UI События для пользовательского интерфейса
+        UI_CHANGE_STATE_TABS,
     }
 }

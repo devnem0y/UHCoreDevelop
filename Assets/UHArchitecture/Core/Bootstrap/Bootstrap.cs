@@ -53,7 +53,7 @@ namespace UralHedgehog
         /// </summary>
         protected virtual void Initialization()
         {
-            _settings = new Settings(_loader.UserInfo.SettingsData, _audioMixer);
+            _settings = new Settings(_loader.SettingsInfo.SettingsData, _audioMixer);
             LocalizationManager = new LocalizationManager(_localizationConfig) { Language = _settings.Language };
             _settings.OnChangeLanguage += OnLocalize;
             AudioManager = new AudioManager(_audioMixer, _audioResources);
@@ -62,9 +62,14 @@ namespace UralHedgehog
             _init = true;
         }
 
-        public void Save()
+        public void SaveSettings()
         {
-            _saver.Write(_settings, _player);
+            _saver.Write(_settings);
+        }
+        
+        public void SaveUser(bool isCloud = false)
+        {
+            _saver.Write(_player, isCloud);
         }
 
         public virtual void ChangeState(GameState state)
@@ -96,7 +101,8 @@ namespace UralHedgehog
         
         private void OnApplicationQuit()
         {
-            Save();
+            SaveSettings();
+            SaveUser(true);
         }
     }
 }

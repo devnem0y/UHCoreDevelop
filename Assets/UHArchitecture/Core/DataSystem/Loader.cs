@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Globalization;
+using UnityEngine;
 
 namespace UralHedgehog
 {
@@ -12,30 +14,111 @@ namespace UralHedgehog
         //TODO: Mock это конфиги для редактора
         [SerializeField] private SettingsConfig _settingsMock;
         [SerializeField] private PlayerConfig _playerMock;
+
+        [SerializeField] private bool _takingMock;
         
         public UserInfo UserInfo { get; private set; }
+        public SettingsInfo SettingsInfo { get; private set; }
         public bool IsLoaded { get; private set; }
         
         public void Load()
         {
-            //TODO: Если делать на WebGL нужно пересмотреть загрузку и сохранение на сервер, вместо PlayerPrefs
-            //TODO: Планирую на яндекс
-
-            const string key = nameof(UserInfo);
+            const string keyUser = nameof(UserInfo);
+            const string keySettings = nameof(SettingsInfo);
             
-            if (PlayerPrefs.HasKey(key)) //Если есть сохраненные данные, достаем
+            var cultureInfo = new CultureInfo("en-us");
+
+            #region User
+            
+            //Изначально берем из конфига по дефолту
+            UserInfo = new UserInfo(_playerConfig.Data);
+
+            var dateTimeLocal = "";
+            var dateTimeCloud = "";
+            var isLocal = false;
+            var isCloud = false;
+            PlayerData playerDataLocal = default;
+            PlayerData playerDataCloud = default;
+
+            if (PlayerPrefs.HasKey(keyUser)) //Если есть сохраненные данные в PlayerPrefs, достаем
             {
-                var path = PlayerPrefs.GetString(key);
-                UserInfo = JsonUtility.FromJson<UserInfo>(path);
+                var path = PlayerPrefs.GetString(keyUser);
+                var userInfo = JsonUtility.FromJson<UserInfo>(path);
+                dateTimeLocal = userInfo.DateTime;
+                playerDataLocal = userInfo.PlayerData;
+                isLocal = true;
+            }
+
+            var myDataCloud = ""; //TODO: Строка из облака
+
+            if (!string.IsNullOrEmpty(myDataCloud))
+            {
+                var userInfo = JsonUtility.FromJson<UserInfo>(myDataCloud);
+                dateTimeCloud = userInfo.DateTime; 
+                playerDataCloud = userInfo.PlayerData;
+                isCloud = true;
+            }
+
+            switch (isLocal)
+            {
+                case true when isCloud:
+                {
+                    var parseD1 = DateTime.Parse(dateTimeLocal, cultureInfo);
+                    var parseD2 = DateTime.Parse(dateTimeCloud, cultureInfo);
+            
+                    var result = DateTime.Compare(parseD1, parseD2);
+            
+                    switch (result)
+                    {
+                        case < 0:
+                            //TODO: Берем из облака
+                            UserInfo = new UserInfo(playerDataCloud);
+                            break;
+                        case 0:
+                            //TODO: Берем из PlayerPrefs
+                            UserInfo = new UserInfo(playerDataLocal);
+                            break;
+                        default:
+                            //TODO: Берем из PlayerPrefs и записываем в облако
+                            UserInfo = new UserInfo(playerDataLocal);
+                            //Game.Instance.SaveUser(true);
+                            break;
+                    }
+
+                    break;
+                }
+                case true:
+                    UserInfo = new UserInfo(playerDataLocal);
+                    break;
+                default:
+                    UserInfo = new UserInfo(playerDataCloud);
+                    break;
+            }
+
+            #endregion
+            
+            #region Settings
+
+            if (PlayerPrefs.HasKey(keySettings)) //Если есть сохраненные данные, достаем
+            {
+                var path = PlayerPrefs.GetString(keySettings);
+                SettingsInfo = JsonUtility.FromJson<SettingsInfo>(path);
             }
             else
             {
                 //Иначе берем из конфига по дефолту
-                UserInfo = new UserInfo(_settingsConfig.Data, _playerConfig.Data);
+                SettingsInfo = new SettingsInfo(_settingsConfig.Data);
             }
+
+            #endregion
             
-#if UNITY_EDITOR // Если работаем в редакторе, достаем из моков
-            UserInfo = new UserInfo(_settingsMock.Data, _playerMock.Data);
+#if UNITY_EDITOR // Если работаем в редакторе, достаем из моков при условии _takingMock = true
+
+            if (_takingMock)
+            {
+                UserInfo = new UserInfo(_playerMock.Data);
+                SettingsInfo = new SettingsInfo(_settingsMock.Data);
+            }
 #endif
             
             IsLoaded = true;

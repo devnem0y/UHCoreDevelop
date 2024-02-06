@@ -3,12 +3,18 @@ using UralHedgehog;
 [System.Serializable]
 public struct UserInfo
 {
-    public SettingsData SettingsData;
+    public string DateTime;
     public PlayerData PlayerData;
 
-    public UserInfo(SettingsData settingsData, PlayerData playerData)
+    public UserInfo(string dateTime, PlayerData playerData)
     {
-        SettingsData = settingsData;
+        DateTime = dateTime;
+        PlayerData = playerData;
+    }
+    
+    public UserInfo(PlayerData playerData)
+    {
+        DateTime = "";
         PlayerData = playerData;
     }
 }

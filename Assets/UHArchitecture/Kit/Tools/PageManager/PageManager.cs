@@ -9,6 +9,8 @@ namespace UralHedgehog
     public class PageManager
     {
         [SerializeField] private List<Page> _pages;
+        
+        public int CurrentPageIndex { get; private set; }
 
         public void Init(int defaultEnablePage = 0)
         {
@@ -17,7 +19,7 @@ namespace UralHedgehog
                 _pages[i].Init(i);
                 if (_pages[i].Tab != null)
                 {
-                    _pages[i].Tab.onClick += EnablePage;
+                    _pages[i].Tab.onEnable += EnablePage;
                 }
             }
 
@@ -36,15 +38,19 @@ namespace UralHedgehog
         {
             foreach (var page in _pages.Where(page => page.Tab != null))
             {
-                page.Tab.onClick -= EnablePage;
+                page.Tab.onEnable -= EnablePage;
             }
         }
 
-        private void EnablePage(int pageId)
+        protected internal void EnablePage(int pageId)
         {
             for (var i = 0; i < _pages.Count; i++)
             {
-                if (i == pageId) _pages[i].Show();
+                if (i == pageId)
+                {
+                    CurrentPageIndex = i;
+                    _pages[i].Show();
+                }
                 else _pages[i].Hide();
             }
         }
@@ -53,7 +59,11 @@ namespace UralHedgehog
         {
             for (var i = 0; i < _pages.Count; i++)
             {
-                if (i == pageId) _pages[i].Show(isInit);
+                if (i == pageId)
+                {
+                    CurrentPageIndex = i;
+                    _pages[i].Show(isInit);
+                }
                 else _pages[i].Hide(isInit);
             }
         }
