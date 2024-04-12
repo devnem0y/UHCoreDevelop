@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using UnityEngine;
 using UralHedgehog.UI;
 
@@ -22,6 +21,7 @@ namespace UralHedgehog
         protected override void Initialization()
         {
             base.Initialization();
+            UIManager = new UIManager(_settings);
         }
 
         public override void ChangeState(GameState state)
@@ -35,7 +35,7 @@ namespace UralHedgehog
                     break;
                 case GameState.MAIN:
                     Debug.Log("<color=yellow>Main</color>");
-                    ScreenTransition.Perform(OpenViewSettings, 0.3f);
+                    ScreenTransition.Perform(UIManager.OpenViewSettings, 0.3f);
                     break;
                 case GameState.PLAY:
                     Debug.Log("<color=yellow>Play</color>");

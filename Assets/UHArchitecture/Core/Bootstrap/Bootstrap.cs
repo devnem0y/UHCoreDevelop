@@ -19,6 +19,7 @@ namespace UralHedgehog
         
         public LocalizationManager LocalizationManager { get; private set; }
         public AudioManager AudioManager { get; private set; }
+        public UIManager UIManager { get; protected set; }
         public GameState GameState { get; private set; }
 
         public ScreenTransition ScreenTransition => _screenTransition;
@@ -29,8 +30,8 @@ namespace UralHedgehog
 
         private bool _init;
         
-        private Settings _settings;
-        private Player _player;
+        protected Settings _settings;
+        protected Player _player;
 
         protected void Run()
         {
@@ -87,15 +88,6 @@ namespace UralHedgehog
         protected virtual void OnDestroy()
         {
             _settings.OnChangeLanguage -= OnLocalize;
-        }
-
-        /// <summary>
-        /// Поднимает виджет настроек
-        /// </summary>
-        public void OpenViewSettings()
-        {
-            var wSettingsData = new Data(nameof(WSettings), _settings);
-            UIDispatcher.Send(EventUI.SHOW_WIDGET, wSettingsData);
         }
 
         private void OnLocalize()
