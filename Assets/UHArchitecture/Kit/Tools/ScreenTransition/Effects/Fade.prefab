@@ -192,6 +192,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 8128571984755026377}
+  _delay: 0
+  _labelNext: {fileID: 0}
 --- !u!95 &8128571984755026377
 Animator:
   serializedVersion: 5
@@ -204,7 +206,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1fc0af97c46bb6f46830e704ac31b612, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

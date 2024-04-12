@@ -32,10 +32,12 @@ namespace UralHedgehog
             {
                 case GameState.LOADING:
                     Debug.Log("<color=yellow>Loading</color>");
+                    ScreenTransition.Perform(null, TransitionMode.STATIC);
                     break;
                 case GameState.MAIN:
                     Debug.Log("<color=yellow>Main</color>");
-                    ScreenTransition.Perform(UIManager.OpenViewSettings, 0.3f);
+                    UIManager.OpenViewSettings();
+                    ScreenTransition.Show();
                     break;
                 case GameState.PLAY:
                     Debug.Log("<color=yellow>Play</color>");
