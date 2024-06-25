@@ -10,60 +10,47 @@ namespace UralHedgehog
         {
             [SerializeField] private Transform _wrapperPanels;
             [SerializeField] private Transform _wrapperWindows;
-            [SerializeField] private Widget[] _widgets;
+            [SerializeField, Tooltip("Для того чтобы все работало правильно, в префабе виджета, скрипт виджета должен идти вторым после RectTransform-а")]
+            private MonoBehaviour[] _widgets;
 
-            private List<Widget> _list;
+            private List<IWidget> _list;
 
             private void Awake()
             {
-                _list = new List<Widget>();
-
-                UIDispatcher.ShowWidget += Create;
-                UIDispatcher.HideWidget += Hide;
-                UIDispatcher.Kill += Kill;
+                _list = new List<IWidget>();
             }
 
-            private void OnDestroy()
+            public void Create<T>(string widgetName, T model)
             {
-                UIDispatcher.ShowWidget -= Create;
-                UIDispatcher.HideWidget -= Hide;
-                UIDispatcher.Kill -= Kill;
-            }
-
-            private void Create(object arg)
-            {
-                var data = (Data)arg;
-
                 foreach (var w in _widgets)
                 {
-                    if (!w.name.Equals(data.Name)) continue;
-                    var widget = Instantiate(w, w.Type == Type.WINDOW ? _wrapperWindows : _wrapperPanels);
-                    widget.gameObject.name = data.Name;
-                    var WidgetComponent = (Widget)widget.GetComponent(data.Name);
+                    if (!w.name.Equals(widgetName)) continue;
+                    var widgetT = (Widget<T>)w;
+                    var widget = Instantiate(widgetT, widgetT.Type == Type.WINDOW ? _wrapperWindows : _wrapperPanels);
+                    widget.transform.name = widgetName;
+                    var WidgetComponent = (Widget<T>)widget.GetComponent(widgetName);
                     _list.Add(WidgetComponent);
-                    if (data.Params != null) widget.Init(data.Params);
-                    else widget.Init();
+                    widget.Init(model);
+                    widget.hide += OnHide;
                     widget.Show();
                 }
             }
 
-            private void Hide(object arg)
+            public void Kill(string widgetName)
             {
-                var data = (Data)arg;
-                var widget = GetWidget(_list, data.Name);
-                if (widget == null) return;
-                widget.Hide();
-            }
-
-            private void Kill(object arg)
-            {
-                var widget = (Widget)arg;
+                var widget = GetWidget(_list, widgetName);
+                widget.hide -= OnHide;
                 _list.Remove(widget);
             }
 
-            private static Widget GetWidget(IEnumerable<Widget> list, string name)
+            private void OnHide(IWidget widget)
             {
-                return list.FirstOrDefault(window => window.GetType().Name.Equals(name));
+                Kill(widget.Name);
+            }
+
+            private static IWidget GetWidget(IEnumerable<IWidget> list, string name)
+            {
+                return list.LastOrDefault(window => window.Name.Equals(name));
             }
         }
     }

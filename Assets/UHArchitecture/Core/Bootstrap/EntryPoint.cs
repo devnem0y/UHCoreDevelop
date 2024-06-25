@@ -6,7 +6,7 @@ using UralHedgehog.UI;
 
 namespace UralHedgehog
 {
-    public class Bootstrap : MonoBehaviour
+    public class EntryPoint : MonoBehaviour
     {
         [SerializeField] private Loader _loader;
         [SerializeField] private Saver _saver;
@@ -14,7 +14,8 @@ namespace UralHedgehog
         [SerializeField] private LocalizationConfig _localizationConfig;
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private AudioResources _audioResources;
-        
+
+        [SerializeField] private UIHandler _uiHandler;
         [SerializeField] private ScreenTransition _screenTransition;
         
         public LocalizationManager LocalizationManager { get; private set; }
@@ -22,7 +23,8 @@ namespace UralHedgehog
         public UIManager UIManager { get; protected set; }
         public GameState GameState { get; private set; }
 
-        public ScreenTransition ScreenTransition => _screenTransition;
+        protected UIHandler UIHandler => _uiHandler;
+        protected ScreenTransition ScreenTransition => _screenTransition;
 
         public event Action Loading;
         public event Action Launch;

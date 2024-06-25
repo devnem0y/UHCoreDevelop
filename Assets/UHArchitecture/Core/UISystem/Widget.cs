@@ -5,12 +5,18 @@ namespace UralHedgehog
 {
     namespace UI
     {
-        public abstract class Widget : MonoBehaviour, IWidget
+        public abstract class Widget<T> : MonoBehaviour, IWidget
         {
             [SerializeField] private Type _type;
             public Type Type => _type;
 
+            public string Name => transform.name;
+
             private Transform _wrapper;
+
+            protected T Model { get; private set; }
+
+            public event Action<IWidget> hide;
             
             protected virtual void Awake()
             {
@@ -18,14 +24,12 @@ namespace UralHedgehog
                 _wrapper.localScale = Vector3.zero;
             }
 
-            public virtual void Init()
+            /// <summary>
+            /// Base не удалять! Все что нужно писать после.
+            /// </summary>
+            public virtual void Init(T model)
             {
-                
-            }
-
-            public virtual void Init(params object[] param)
-            {
-                
+                Model = model;
             }
 
             public virtual void Show()
@@ -35,18 +39,8 @@ namespace UralHedgehog
 
             public virtual void Hide()
             {
-                UIDispatcher.Send(EventUI.KILL, this);
+                hide?.Invoke(this);
                 Destroy(gameObject);
-            }
-            
-            protected static void Open(Action callback)
-            {
-                callback?.Invoke();
-            }
-            
-            protected static void Close(Action callback)
-            {
-                callback?.Invoke();
             }
         }
 
@@ -54,23 +48,6 @@ namespace UralHedgehog
         {
             PANEL = 0,
             WINDOW = 1,
-        }
-        
-        public class Data
-        {
-            public string Name { get; }
-            public object[] Params { get; }
-
-            public Data(string name)
-            {
-                Name = name;
-            }
-        
-            public Data(string name, params object[] param)
-            {
-                Name = name;
-                Params = param;
-            }
         }
     }
 }

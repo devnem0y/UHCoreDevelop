@@ -8,13 +8,13 @@ namespace UralHedgehog
     {
         [SerializeField] private string _key;
 
-        private Bootstrap _bootstrap;
+        private EntryPoint _entryPoint;
         private Text _label;
         private LocalizationManager _localizationManager;
 
         private void Awake()
         {
-            _bootstrap = FindObjectOfType<Bootstrap>();
+            _entryPoint = FindObjectOfType<EntryPoint>();
             _label = GetComponent<Text>();
         }
 
@@ -25,7 +25,7 @@ namespace UralHedgehog
 
         private void Start()
         {
-            _localizationManager = _bootstrap.LocalizationManager;
+            _localizationManager = _entryPoint.LocalizationManager;
             _localizationManager.Localize += Localize;
             Localize();
         }

@@ -3,11 +3,9 @@ using UnityEngine.UI;
 using UralHedgehog;
 using UralHedgehog.UI;
 
-public class WSettings : Widget
+public class WSettings : Widget<ISettings>
 {
     [SerializeField] private Button _btnClose;
-
-    private ISettings _settings;
 
     protected override void Awake()
     {
@@ -15,28 +13,27 @@ public class WSettings : Widget
         _btnClose.onClick.AddListener(Hide);
     }
 
-    public override void Init(params object[] param)
+    public override void Init(ISettings model)
     {
-        _settings = (ISettings) param[0];
+        base.Init(model);
+        
+        Debug.Log("Init WSettings");
+        Debug.Log($"Language {Model.Language}");
     }
 
     public override void Show()
     {
         base.Show();
-        Open(() =>
-        {
-            //TODO: Можно вставить анимацию
-            Debug.Log("Open callback");
-        });
+        
+        //TODO: Можно вставить анимацию
+        Debug.Log("Open callback");
     }
 
     public override void Hide()
     {
-        Close(() =>
-        {
-            //TODO: Можно вставить анимацию
-            Debug.Log("Close callback");
-        });
+        //TODO: Можно вставить анимацию
+        Debug.Log("Close callback");
+        
         base.Hide();
     }
 }

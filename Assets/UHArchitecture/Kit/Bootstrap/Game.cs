@@ -4,7 +4,7 @@ using UralHedgehog.UI;
 
 namespace UralHedgehog
 {
-    public class Game : Bootstrap
+    public class Game : EntryPoint
     {
         public static Game Instance { get; private set; }
 
@@ -21,7 +21,7 @@ namespace UralHedgehog
         protected override void Initialization()
         {
             base.Initialization();
-            UIManager = new UIManager(_settings);
+            UIManager = new UIManager(UIHandler, _settings);
         }
 
         public override void ChangeState(GameState state)

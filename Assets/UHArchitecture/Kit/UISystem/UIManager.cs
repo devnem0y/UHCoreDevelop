@@ -4,12 +4,14 @@
     {
         public class UIManager
         {
-            private Data _wSettingsData;
-
+            private readonly UIHandler _uiHandler;
+            
             private readonly ISettings _settings;
             
-            public UIManager(ISettings settings)
+            public UIManager(UIHandler uiHandler, ISettings settings)
             {
+                _uiHandler = uiHandler;
+                
                 _settings = settings;
             }
 
@@ -18,16 +20,9 @@
             /// <summary>
             /// Поднимает виджет настроек
             /// </summary>
-            public void OpenViewSettings() // Вариант 1 (если данные переданы при инициализации и больше неизменяются)
+            public void OpenViewSettings()
             {
-                _wSettingsData = new Data(nameof(WSettings), _settings);
-                UIDispatcher.Send(EventUI.SHOW_WIDGET, _wSettingsData);
-            }
-            
-            public void OpenViewSettings(ISettings settings) // Вариант 2
-            {
-                _wSettingsData = new Data(nameof(WSettings), settings);
-                UIDispatcher.Send(EventUI.SHOW_WIDGET, _wSettingsData);
+                _uiHandler.Create(nameof(WSettings), _settings);
             }
 
             #endregion
@@ -41,7 +36,7 @@
             /// </summary>
             public void CloseViewSettings()
             {
-                UIDispatcher.Send(EventUI.KILL, _wSettingsData);
+                _uiHandler.Kill(nameof(WSettings));
             }
 
             #endregion

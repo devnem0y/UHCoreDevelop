@@ -1,13 +1,14 @@
-﻿namespace UralHedgehog
+﻿using System;
+
+namespace UralHedgehog
 {
     namespace UI
     {
         public interface IWidget
         {
-            void Init();
-            void Init(params object[] param);
-            void Show();
-            void Hide();
+            public string Name { get; }
+            
+            public event Action<IWidget> hide;
         }
     }
 }

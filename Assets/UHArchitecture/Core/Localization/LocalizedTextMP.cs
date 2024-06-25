@@ -16,13 +16,13 @@ namespace UralHedgehog
         public string Param { get; set; }
         public string Prefix { get; set; }
 
-        private Bootstrap _bootstrap;
+        private EntryPoint _entryPoint;
         private TMP_Text _label;
         private LocalizationManager _localizationManager;
 
         private void Awake()
         {
-            _bootstrap = FindObjectOfType<Bootstrap>();
+            _entryPoint = FindObjectOfType<EntryPoint>();
             _label = GetComponent<TMP_Text>();
         }
 
@@ -33,7 +33,7 @@ namespace UralHedgehog
 
         private void Start()
         {
-            _localizationManager = _bootstrap.LocalizationManager;
+            _localizationManager = _entryPoint.LocalizationManager;
             _localizationManager.Localize += Localize;
             Localize();
         }
