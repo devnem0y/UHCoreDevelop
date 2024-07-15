@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4050075098924102}
   - component: {fileID: 3095378861937419689}
   m_Layer: 0
-  m_Name: UIHandler
+  m_Name: UIRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,8 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wrapperPanels: {fileID: 30398436424218558}
   _wrapperWindows: {fileID: 1219260050171743274}
-  _widgets:
-  - {fileID: 8015555602500150929, guid: 89ce16450e791614295a50c99e127b7e, type: 3}
+  _storage: {fileID: 11400000, guid: d3d875d1530b1b94d94fbab97902ffad, type: 2}
 --- !u!1 &8753377776333382170
 GameObject:
   m_ObjectHideFlags: 0

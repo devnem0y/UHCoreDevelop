@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ee09ac2b504ea89db5aa0a9a7b61ca, type: 3}
+  m_Name: WidgetStorage
+  m_EditorClassIdentifier: 
+  _widgets:
+  - {fileID: -1430340705365435324, guid: 011936805b5e2d843b298205accfe278, type: 3}
+  - {fileID: -8119635413073097013, guid: 448b881613a4c634b9dc64fc7fb52f31, type: 3}

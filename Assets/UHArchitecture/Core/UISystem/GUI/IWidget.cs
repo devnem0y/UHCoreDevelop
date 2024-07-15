@@ -9,6 +9,8 @@ namespace UralHedgehog
             public string Name { get; }
             
             public event Action<IWidget> hide;
+            
+            void Hide();
         }
     }
 }

@@ -25,7 +25,8 @@ namespace UralHedgehog
             }
 
             /// <summary>
-            /// Base не удалять! Все что нужно писать после.
+            /// Base не удалять, даже если модель пустая!
+            /// Все что нужно писать после.
             /// </summary>
             public virtual void Init(T model)
             {

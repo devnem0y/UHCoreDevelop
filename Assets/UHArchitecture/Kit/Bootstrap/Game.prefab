@@ -51,7 +51,6 @@ MonoBehaviour:
   _localizationConfig: {fileID: 11400000, guid: 559fc892bc1cc704e94e95af25cd11e8, type: 2}
   _audioMixer: {fileID: 24100000, guid: da9ec1a4d53de364aa35ce645567570f, type: 2}
   _audioResources: {fileID: 11400000, guid: e6f72874f0ca96f42ab9be2a8f01f222, type: 2}
-  _uiHandler: {fileID: 2693766133719627956}
   _screenTransition: {fileID: 2402895376572982100}
 --- !u!1001 &1123314585695001885
 PrefabInstance:
@@ -101,9 +100,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3095378861937419689, guid: 89d16b9b28c43d04c925673c9d42bba3, type: 3}
+      propertyPath: _storage
+      value: 
+      objectReference: {fileID: 11400000, guid: d3d875d1530b1b94d94fbab97902ffad, type: 2}
     - target: {fileID: 5043772562646712132, guid: 89d16b9b28c43d04c925673c9d42bba3, type: 3}
       propertyPath: m_Name
-      value: UIHandler
+      value: UIRoot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -115,17 +118,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4050075098924102, guid: 89d16b9b28c43d04c925673c9d42bba3, type: 3}
   m_PrefabInstance: {fileID: 1123314585695001885}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2693766133719627956 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3095378861937419689, guid: 89d16b9b28c43d04c925673c9d42bba3, type: 3}
-  m_PrefabInstance: {fileID: 1123314585695001885}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aad0b0319345b94c8fb4704a5d7b425, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8077826176262120296
 PrefabInstance:
   m_ObjectHideFlags: 0

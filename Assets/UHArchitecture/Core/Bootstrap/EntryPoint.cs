@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Serialization;
 using UralHedgehog.UI;
 
 namespace UralHedgehog
@@ -14,16 +15,14 @@ namespace UralHedgehog
         [SerializeField] private LocalizationConfig _localizationConfig;
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private AudioResources _audioResources;
-
-        [SerializeField] private UIHandler _uiHandler;
+        
         [SerializeField] private ScreenTransition _screenTransition;
         
         public LocalizationManager LocalizationManager { get; private set; }
         public AudioManager AudioManager { get; private set; }
         public UIManager UIManager { get; protected set; }
         public GameState GameState { get; private set; }
-
-        protected UIHandler UIHandler => _uiHandler;
+        
         protected ScreenTransition ScreenTransition => _screenTransition;
 
         public event Action Loading;

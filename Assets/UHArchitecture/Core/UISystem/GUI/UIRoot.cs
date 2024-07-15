@@ -6,12 +6,11 @@ namespace UralHedgehog
 {
     namespace UI
     {
-        public class UIHandler : MonoBehaviour
+        public class UIRoot : MonoBehaviour
         {
             [SerializeField] private Transform _wrapperPanels;
             [SerializeField] private Transform _wrapperWindows;
-            [SerializeField, Tooltip("Для того чтобы все работало правильно, в префабе виджета, скрипт виджета должен идти вторым после RectTransform-а")]
-            private MonoBehaviour[] _widgets;
+            [SerializeField] private WidgetStorage _storage;
 
             private List<IWidget> _list;
 
@@ -22,7 +21,7 @@ namespace UralHedgehog
 
             public void Create<T>(string widgetName, T model)
             {
-                foreach (var w in _widgets)
+                foreach (var w in _storage.Widgets)
                 {
                     if (!w.name.Equals(widgetName)) continue;
                     var widgetT = (Widget<T>)w;
@@ -35,22 +34,22 @@ namespace UralHedgehog
                     widget.Show();
                 }
             }
-
+            
             public void Kill(string widgetName)
             {
                 var widget = GetWidget(_list, widgetName);
+                widget?.Hide();
+            }
+            
+            private void OnHide(IWidget widget)
+            {
                 widget.hide -= OnHide;
                 _list.Remove(widget);
             }
 
-            private void OnHide(IWidget widget)
-            {
-                Kill(widget.Name);
-            }
-
             private static IWidget GetWidget(IEnumerable<IWidget> list, string name)
             {
-                return list.LastOrDefault(window => window.Name.Equals(name));
+                return list.LastOrDefault(widget => widget.Name.Equals(name));
             }
         }
     }

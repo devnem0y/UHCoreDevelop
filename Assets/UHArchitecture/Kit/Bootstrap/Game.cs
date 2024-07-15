@@ -21,7 +21,7 @@ namespace UralHedgehog
         protected override void Initialization()
         {
             base.Initialization();
-            UIManager = new UIManager(UIHandler, _settings);
+            UIManager = new UIManager(FindObjectOfType<UIRoot>());
         }
 
         public override void ChangeState(GameState state)
@@ -36,7 +36,8 @@ namespace UralHedgehog
                     break;
                 case GameState.MAIN:
                     Debug.Log("<color=yellow>Main</color>");
-                    UIManager.OpenViewSettings();
+                    var example = new Example();
+                    UIManager.OpenViewExample(example);
                     ScreenTransition.Show();
                     break;
                 case GameState.PLAY:
@@ -51,6 +52,14 @@ namespace UralHedgehog
                 
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                UIManager.CloseViewExample();
             }
         }
     }
