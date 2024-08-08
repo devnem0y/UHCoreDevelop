@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Serialization;
 using UralHedgehog.UI;
 
 namespace UralHedgehog
@@ -33,15 +32,10 @@ namespace UralHedgehog
         
         protected Settings _settings;
         protected Player _player;
-
-        protected void Run()
+        
+        private IEnumerator Start()
         {
             ChangeState(GameState.LOADING);
-            StartCoroutine(AlternateСall());
-        }
-        
-        private IEnumerator AlternateСall()
-        {
             _loader.Load();
             yield return new WaitUntil(() => _loader.IsLoaded);
             Loading?.Invoke();

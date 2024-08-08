@@ -13,11 +13,6 @@ namespace UralHedgehog
             Instance = this;
         }
 
-        protected void Start()
-        {
-            Run();
-        }
-
         protected override void Initialization()
         {
             base.Initialization();
