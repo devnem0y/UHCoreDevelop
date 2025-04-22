@@ -10,6 +10,15 @@ namespace UralHedgehog
 
         private void Awake()
         {
+            /*if (Instance == null) Instance = this;
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+    
+            DontDestroyOnLoad(gameObject);*/
+            
             Instance = this;
         }
 
@@ -33,6 +42,7 @@ namespace UralHedgehog
                     Debug.Log("<color=yellow>Main</color>");
                     var example = new Example();
                     UIManager.OpenViewExample(example);
+                    UIManager.OpenViewSettings(_settings);
                     ScreenTransition.Show();
                     break;
                 case GameState.PLAY:

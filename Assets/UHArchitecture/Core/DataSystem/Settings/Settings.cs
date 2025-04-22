@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -21,8 +20,6 @@ namespace UralHedgehog
         public float VolumeVoice { get; private set; }
         public Language Language { get; private set; }
 
-        public event Action OnChangeLanguage;
-
         public Settings(SettingsData data, AudioMixer audioMixer)
         {
             Data = data;
@@ -32,7 +29,7 @@ namespace UralHedgehog
             ChangeVolumeMusic(data.Music);
             ChangeVolumeSound(data.Sound);
             ChangeVolumeVoice(data.Voice);
-            ChangeLanguage(data.Language);
+            OnChangeLanguage(data.Language);
         }
 
         private void SetFloat(string nameGroup, float value)
@@ -64,10 +61,10 @@ namespace UralHedgehog
             SetFloat(VOICE, VolumeVoice);
         }
 
-        public void ChangeLanguage(Language language)
+        public void OnChangeLanguage(Language language)
         {
             Language = language;
-            OnChangeLanguage?.Invoke();
+            LocalizationManager.OnLocalize(Language);
         }
 
         public void Save()

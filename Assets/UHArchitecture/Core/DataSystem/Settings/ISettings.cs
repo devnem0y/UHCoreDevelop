@@ -12,6 +12,6 @@ namespace UralHedgehog
         void ChangeVolumeMusic(float value);
         void ChangeVolumeSound(float value);
         void ChangeVolumeVoice(float value);
-        void ChangeLanguage(Language language);
+        void OnChangeLanguage(Language language);
     }
 }

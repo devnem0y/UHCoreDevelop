@@ -10,48 +10,45 @@ namespace UralHedgehog
 
         private EntryPoint _entryPoint;
         private Text _label;
-        private LocalizationManager _localizationManager;
 
         private void Awake()
         {
-            _entryPoint = FindObjectOfType<EntryPoint>();
             _label = GetComponent<Text>();
         }
 
         private void OnDestroy()
         {
-            _localizationManager.Localize -= Localize;
+            LocalizationManager.Localize -= Localize;
         }
 
         private void Start()
         {
-            _localizationManager = _entryPoint.LocalizationManager;
-            _localizationManager.Localize += Localize;
+            LocalizationManager.Localize += Localize;
             Localize();
         }
 
         private void Localize()
         {
-            switch (_localizationManager.Language)
+            switch (LocalizationManager.Language)
             {
                 case Language.CHINESE_SIMPLIFIED:
-                    _label.font = _localizationManager.Config.Chinese;
+                    _label.font = LocalizationManager.Config.Chinese;
                     break;
                 case Language.RUSSIAN:
-                    _label.font = _localizationManager.Config.Basic;
+                    _label.font = LocalizationManager.Config.Basic;
                     break;
                 case Language.ENGLISH:
                 case Language.GERMAN:
                 case Language.FRENCH:
                 case Language.SPANISH:
                 case Language.ITALIAN:
-                    _label.font = _localizationManager.Config.Extra;
+                    _label.font = LocalizationManager.Config.Extra;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            _label.text = _localizationManager.GetTranslate(_key);
+            _label.text = LocalizationManager.GetTranslate(_key);
         }
     }
 }

@@ -6,9 +6,17 @@
         {
             private readonly UIRoot _uiRoot;
             
+            private readonly ISettings _settings;
+            
             public UIManager(UIRoot uiRoot)
             {
                 _uiRoot = uiRoot;
+            }
+            
+            public UIManager(UIRoot uiRoot, ISettings settings)
+            {
+                _uiRoot = uiRoot;
+                _settings = settings;
             }
 
             #region Open
@@ -28,6 +36,11 @@
             public void OpenViewExampleEmpty()
             {
                 _uiRoot.Create<IEmptyWidget>(nameof(WExampleEmpty), null);
+            }
+            
+            public void OpenViewSettings(ISettings settings)
+            {
+                _uiRoot.Create(nameof(WSettings), settings);
             }
 
             #endregion

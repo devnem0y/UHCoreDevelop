@@ -17,7 +17,6 @@ namespace UralHedgehog
         
         [SerializeField] private ScreenTransition _screenTransition;
         
-        public LocalizationManager LocalizationManager { get; private set; }
         public AudioManager AudioManager { get; private set; }
         public UIManager UIManager { get; protected set; }
         public GameState GameState { get; private set; }
@@ -30,6 +29,7 @@ namespace UralHedgehog
 
         private bool _init;
         
+        protected LocalizationManager _localizationManager;
         protected Settings _settings;
         protected Player _player;
         
@@ -54,8 +54,7 @@ namespace UralHedgehog
         protected virtual void Initialization()
         {
             _settings = new Settings(_loader.SettingsInfo.SettingsData, _audioMixer);
-            LocalizationManager = new LocalizationManager(_localizationConfig) { Language = _settings.Language };
-            _settings.OnChangeLanguage += OnLocalize;
+            _localizationManager = new LocalizationManager(_localizationConfig, _settings.Language);
             AudioManager = new AudioManager(_audioMixer, _audioResources);
             _player = new Player(_loader.UserInfo.PlayerData);
             
@@ -82,12 +81,7 @@ namespace UralHedgehog
         /// </summary>
         protected virtual void OnDestroy()
         {
-            _settings.OnChangeLanguage -= OnLocalize;
-        }
-
-        private void OnLocalize()
-        {
-            LocalizationManager.OnLocalize();
+            
         }
         
         private void OnApplicationQuit()

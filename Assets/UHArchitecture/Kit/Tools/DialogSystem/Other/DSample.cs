@@ -13,12 +13,12 @@ public class DSample : MonoBehaviour
 
     public void Init(string name, Sprite avatar, Sprite billet, string message, bool isLeft)
     {
-        _name.text = Game.Instance.LocalizationManager.GetTranslate(name);
+        _name.text = LocalizationManager.GetTranslate(name);
         var localizeName = _name.GetComponent<LocalizedTextMP>();
         localizeName.Key = name;
         _avatar.sprite = avatar;
         _billet.sprite = billet;
-        _message.text = Game.Instance.LocalizationManager.GetTranslate(message);
+        _message.text = LocalizationManager.GetTranslate(message);
         var localizeMessage = _message.GetComponent<LocalizedTextMP>();
         localizeMessage.Key = message;
 

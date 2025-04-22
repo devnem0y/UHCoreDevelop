@@ -18,20 +18,22 @@ namespace UralHedgehog
 
     public class LocalizationManager
     {
-        private Dictionary<string, List<string>> _localization;
+        private static Dictionary<string, List<string>> _localization;
 
-        public LocalizationConfig Config { get; }
-        public Language Language { get; set; }
+        public static LocalizationConfig Config { get; private set; }
+        public static Language Language { get; private set; }
 
-        public event Action Localize;
+        public static event Action Localize;
 
-        public LocalizationManager(LocalizationConfig config)
+        public LocalizationManager(LocalizationConfig config, Language language)
         {
             Config = config;
+            Language = language;
+            
             LoadLocalization();
         }
 
-        private void LoadLocalization()
+        private static void LoadLocalization()
         {
             _localization = new Dictionary<string, List<string>>();
 
@@ -54,14 +56,15 @@ namespace UralHedgehog
             Debug.Log("Localization loading: <color=green>DONE</color>");
         }
 
-        public string GetTranslate(string key)
+        public static string GetTranslate(string key)
         {
-            return _localization.ContainsKey(key) ? 
-                _localization[key][Language.GetHashCode()] : key;
+            return _localization.TryGetValue(key, out var value) ? 
+                value[Language.GetHashCode()] : key;
         }
 
-        public void OnLocalize()
+        public static void OnLocalize(Language language)
         {
+            Language = language;
             Localize?.Invoke();
         }
     }

@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: WidgetStorage
   m_EditorClassIdentifier: 
   _widgets:
-  - {fileID: -1430340705365435324, guid: 011936805b5e2d843b298205accfe278, type: 3}
-  - {fileID: -8119635413073097013, guid: 448b881613a4c634b9dc64fc7fb52f31, type: 3}
+  - {fileID: 8015555602500150929, guid: 89ce16450e791614295a50c99e127b7e, type: 3}
