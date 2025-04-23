@@ -22,10 +22,10 @@
 			<zh>中国人</zh>-->
 		</Translates>
 	</Key>
-	<Key Name="UI_BUTTON_NEXT_SCENE">
+	<Key Name="UI_BUTTON_PLAY">
 		<Translates>
-			<en>Next Scene</en>
-			<ru>Следующая сцена</ru>
+			<en>Play</en>
+			<ru>Играть</ru>
 			<!--<de></de>
 			<fr></fr>
 			<es></es>
@@ -33,9 +33,9 @@
 			<zh></zh>-->
 		</Translates>
 	</Key>
-	<Key Name="UI_BUTTON_OPTIONS">
+	<Key Name="UI_BUTTON_SETTINGS">
 		<Translates>
-			<en>Options</en>
+			<en>Settings</en>
 			<ru>Настройки</ru>
 			<!--<de></de>
 			<fr></fr>

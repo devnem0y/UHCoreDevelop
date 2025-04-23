@@ -2893,10 +2893,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 1
-  _master: {fileID: 4754265001021447516}
-  _music: {fileID: 1380507860898929345}
-  _sound: {fileID: 5256272465055946873}
-  _voice: {fileID: 3627366561987780158}
+  _sliderMaster: {fileID: 4754265001021447516}
+  _sliderMusic: {fileID: 1380507860898929345}
+  _sliderSound: {fileID: 5256272465055946873}
+  _sliderVoice: {fileID: 3627366561987780158}
   _listMenuLanguage: {fileID: 3971617237364905009}
   _btnClose: {fileID: 2713268532198128070}
 --- !u!223 &1575486154561790075
@@ -2920,7 +2920,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &5637003812628022312
 MonoBehaviour:

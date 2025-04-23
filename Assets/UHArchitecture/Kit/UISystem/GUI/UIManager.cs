@@ -38,9 +38,14 @@
                 _uiRoot.Create<IEmptyWidget>(nameof(WExampleEmpty), null);
             }
             
-            public void OpenViewSettings(ISettings settings)
+            public void OpenViewMainMenu()
             {
-                _uiRoot.Create(nameof(WSettings), settings);
+                _uiRoot.Create<IEmptyWidget>(nameof(PMainMenu), null);
+            }
+            
+            public void OpenViewSettings()
+            {
+                _uiRoot.Create(nameof(WSettings), _settings);
             }
 
             #endregion

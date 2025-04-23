@@ -84,7 +84,7 @@ namespace UralHedgehog
             
         }
         
-        private void OnApplicationQuit()
+        public void OnApplicationQuit()
         {
             SaveSettings();
             SaveUser(true);
